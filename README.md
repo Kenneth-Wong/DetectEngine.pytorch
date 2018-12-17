@@ -1,3 +1,5 @@
+环境：python3+pytorch 0.4.0
+
 预先设置
 
 git clone https://nkwwb@bitbucket.org/detectengine/detectengine.git
