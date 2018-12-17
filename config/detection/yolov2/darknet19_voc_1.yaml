@@ -1,0 +1,84 @@
+work_dir: ./exps/detection/yolov2_darknet19/voc0712trainval
+data_dir: ./data/VOCdevkit
+session: 1
+use_gpu: True
+device: [0,1,2,3]
+model: net.detection.yolov2_darknet19.yolov2_darknet19
+train_dataset: voc_2007_trainval+voc_2012_trainval
+val_dataset:
+test_dataset: voc_2007_test
+pretrained_weight: ./data/pretrained_model/darknet19.weights.npz # The backbone pretrained model on imagenet.
+resume: False
+checkpoint:  # The whole model, if you want to load it for furthering finetuning or testing.
+ignore_weights:
+use_tfboard: False
+debug: False
+snapshot_prefix: 'yolov2_darknet19_voc'
+
+# feeder
+feeder: feeder.RoiFeeder.RoiFeeder
+sampler: feeder.RoiFeeder.sampler
+train_feeder_args:
+  aspect_grouping: False # Whether to use aspect-ratio grouping of training images, introduced merely for saving GPU memory
+  scales: [600,] # Scale to use during training (can list multiple scales) The scale is the pixel size of an image's shortest side
+  max_size: 1000 # Max pixel size of the longest side of a scaled input image
+  use_flipped: True
+  trim_height: 600 # Trim size for input images to create minibatch
+  trim_width: 600
+  max_num_gt_boxes: 20
+  use_all_gt: True
+
+test_feeder_args:
+  scales: [600,]
+  max_size: 1000
+  use_flipped: False
+  size_index: 3
+
+# optim
+optimizer: SGD
+opt_args:
+  lr: 0.001
+  momentum: 0.9
+  weight_decay: 0.0005
+  gamma: 0.1
+  nesterov: False
+  start_epoch: 0
+  step_epoch: [60, 90]
+  max_epoch: 160
+  double_bias: False # Whether to double the learning rate for bias
+  bias_decay: False # Whether to have weight decay on bias as well
+
+# training
+train_args:
+  truncated: False # Whether to initialize the weights with truncated normal distribution
+  ims_per_batch: 64
+  object_scale: 5.0
+  noobject_scale: 1.0
+  class_scale: 1.0
+  coord_scale: 1.0
+  iou_thresh: 0.6
+  snapshot_iters: 5000
+  snapshot_kept: 3
+  summary_interval: 180
+  batch_per_size: 10
+  proposal_method: 'gt'
+
+
+# testing
+test_args:
+  ims_per_batch: 1
+  nms: 0.5
+  bbox_thresh: 0.001
+
+# mix
+mix_args:
+  pixel_means: [[[0., 0., 0.]]] # no means
+  rng_seed: 3
+  eps: 1e-14
+  use_gpu_nms: True
+  max_num_gt_boxes: 20
+  anchors: [[1.08, 1.19], [3.42, 4.41], [6.63, 11.38], [9.42, 5.11], [16.62, 10.52]]
+  input_size: [[320, 320], [352, 352], [384, 384], [416, 416], [448, 448], [480, 480], [512, 512], [544, 544], [576, 576], [608, 608]]
+  output_size: [[10, 10], [11, 11], [12, 12], [13, 13], [14, 14], [15, 15], [16, 16], [17, 17], [18, 18], [19, 19]]
+  feat_stride: [32,]
+

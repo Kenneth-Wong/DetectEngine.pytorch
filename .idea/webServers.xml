@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="sftp://wangwenbin@10.29.150.45:22/home/wangwenbin/anaconda3/envs/py3.6-pytorch4.0/bin/python" name="sftp://wangwenbin@10.29.150.45:22/home/wangwenbin/anaconda3/envs/py3.6-pytorch4.0/bin/python">
+        <fileTransfer host="10.29.150.45" port="22" accessType="SFTP">
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

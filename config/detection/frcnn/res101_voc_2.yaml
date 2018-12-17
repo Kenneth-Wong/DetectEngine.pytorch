@@ -1,0 +1,123 @@
+work_dir: ./exps/detection/frcnn_res101/voc07trainval
+data_dir: ./data/VOCdevkit
+session: 2
+use_gpu: True
+device: [2]
+model: net.detection.frcnn_resnet.resnet
+train_dataset: voc_2007_trainval
+val_dataset:
+test_dataset: voc_2007_test
+pretrained_weight: ./data/pretrained_model/resnet101_caffe.pth # The backbone pretrained model, such as VGG16 pretrained on imagenet.
+resume: False
+checkpoint:  # The whole model, if you want to load it for furthering finetuning or testing.
+ignore_weights:
+use_tfboard: False
+debug: False
+snapshot_prefix: 'frcnn_res101_voc'
+
+# feeder
+feeder: feeder.RoiFeeder.RoiFeeder
+sampler: feeder.RoiFeeder.sampler
+train_feeder_args:
+  aspect_grouping: False # Whether to use aspect-ratio grouping of training images, introduced merely for saving GPU memory
+  scales: [600,] # Scale to use during training (can list multiple scales) The scale is the pixel size of an image's shortest side
+  max_size: 1000 # Max pixel size of the longest side of a scaled input image
+  use_flipped: True
+  trim_height: 600 # Trim size for input images to create minibatch
+  trim_width: 600
+  max_num_gt_boxes: 20
+  use_all_gt: True # Whether to use all ground truth bounding boxes for training, For COCO, setting USE_ALL_GT to False will exclude boxes that are flagged as ''iscrowd''
+test_feeder_args:
+  scales: [600,]
+  max_size: 1000
+  use_flipped: False
+
+# optim
+optimizer: SGD
+opt_args:
+  lr: 0.004
+  momentum: 0.9
+  weight_decay: 0.0001
+  gamma: 0.1
+  nesterov: False
+  start_epoch: 0
+  step_epoch: [8]
+  max_epoch: 10
+  double_bias: False # Whether to double the learning rate for bias
+  bias_decay: False # Whether to have weight decay on bias as well
+
+# training
+train_args:
+  truncated: False # Whether to initialize the weights with truncated normal distribution
+  use_gt: False # Whether to add ground truth boxes to the pool when sampling regions
+  ims_per_batch: 4
+  batch_size: 128
+  fg_fraction: 0.25
+  fg_thresh: 0.5
+  bg_thresh_hi: 0.5
+  bg_thresh_lo: 0.0
+  bbox_reg: True
+  bbox_thresh: 0.5 # Overlap required between a ROI and ground-truth box in order for that ROI to be used as a bounding-box regression training example
+  snapshot_iters: 5000
+  snapshot_kept: 3
+  summary_interval: 180
+  bbox_normalize_targets: True
+  bbox_inside_weights: [1.0, 1.0, 1.0, 1.0]
+  bbox_normalize_targets_precomputed: True
+  bbox_normalize_means: [0.0, 0.0, 0.0, 0.0]
+  bbox_normalize_stds: [0.1, 0.1, 0.2, 0.2]
+  has_rpn: True
+  proposal_method: 'gt'
+  rpn_positive_overlap: 0.7 # IOU >= thresh: positive example
+  rpn_negative_overlap: 0.3 # IOU < thresh: negative example
+  rpn_clobber_positives: False # If an anchor statisfied by positive and negative conditions set to negative
+  rpn_fg_fraction: 0.5
+  rpn_batchsize: 256
+  rpn_nms_thresh: 0.7
+  rpn_pre_nms_top_n: 12000
+  rpn_post_nms_top_n: 2000
+  rpn_min_size: 8 # Proposal height and width both need to be greater than RPN_MIN_SIZE (at orig image scale)
+  rpn_bbox_inside_weights: [1.0, 1.0, 1.0, 1.0] # Deprecated (outside weights)
+  rpn_positive_weight: -1.0
+  bn_train: False # Whether to tune the batch normalization parameters during training
+
+# testing
+test_args:
+  ims_per_batch: 1
+  nms: 0.3
+  bbox_reg: True
+  has_rpn: True
+  proposal_method: 'gt'
+  rpn_nms_thresh: 0.7
+  rpn_pre_nms_top_n: 6000
+  rpn_post_nms_top_n: 300
+  rpn_min_size: 16
+  mode: 'nms' # Testing mode, default to be 'nms', 'top' is slower but better
+  rpn_top_n: 5000
+
+# mix
+mix_args:
+  dedup_box: 1./16.
+  pixel_means: [[[102.9801, 115.9465, 122.7717]]] # BGR
+  rng_seed: 3
+  eps: 1e-14
+  use_gpu_nms: True
+  pooling_mode: 'align'
+  pooling_size: 7
+  max_num_gt_boxes: 20
+  anchor_scales: [8, 16, 32]
+  anchor_ratios: [0.5, 1, 2]
+  feat_stride: [16,]
+  crop_resize_with_max_pool: False
+  class_agnostic: True
+
+
+# resnet
+resnet_args:
+  # Option to set if max-pooling is appended after crop_and_resize.
+  # if true, the region will be resized to a square of 2xPOOLING_SIZE,
+  # then 2x2 max-pooling is applied; otherwise the region will be directly
+  # resized to a square of POOLING_SIZE
+  max_pool: False
+  fixed_blocks: 1 # Number of fixed blocks during training, by default the first of all 4 blocks is fixed Range: 0 (none) to 3 (all)
+
