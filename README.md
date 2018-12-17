@@ -12,7 +12,7 @@ ln -s PASCAL_VOC_DEVKIT_PATH VOCdevkit
 
 mkdir pretrained_model
 
-将预训练的model放在pretrained_model下，pretrained model可在https://github.com/jwyang/faster-rcnn.pytorch/tree/master下载。
+将预训练的model放在pretrained_model下，pretrained model可在 https://github.com/jwyang/faster-rcnn.pytorch/tree/master 下载。
 
 cd ..
 
