@@ -1,4 +1,4 @@
-# A *Faster* Pytorch Implementation of Detection Methods (Faster R-CNN+YOLOv2)
+# A Pytorch Implementation going to Contain all Detection Methods!! (Now Faster R-CNN+YOLOv2)
 
 ## Introduction
 
