@@ -62,9 +62,9 @@ class yolov2(nn.Module):
         # target layer
         self.yolo_target = _YOLOTargetLayer(self.num_classes, **args)
 
-    def forward(self, im_data, im_info, gt_boxes, num_boxes, size_index=0):
+    def forward(self, im_data, im_info, gt_boxes, num_boxes):
         batch_size = im_data.size(0)
-        im_data, gt_boxes = self.yolo_preprocess(im_data, gt_boxes, size_index)
+        #im_data, gt_boxes = self.yolo_preprocess(im_data, gt_boxes, size_index)
         im_info = im_info.data
         gt_boxes = gt_boxes.data
         num_boxes = num_boxes.data
@@ -81,6 +81,7 @@ class yolov2(nn.Module):
             base_feat = self.conv4(cat_1_3)
 
         predictions = self.conv_target(base_feat)  # b*(5*25)*13*13
+        Hout, Wout = base_feat.size(2), base_feat.size(3)
         predictions = predictions.permute(0, 2, 3, 1).contiguous().view(batch_size, -1, self.num_anchors,
                                                                         self.num_classes + 5)
 
@@ -99,7 +100,7 @@ class yolov2(nn.Module):
         if self.training:
             _boxes, _ious, _classes, _box_mask, _iou_mask, _class_mask = self.yolo_target(bbox_pred, iou_pred,
                                                                                           gt_boxes,
-                                                                                          num_boxes, size_index)
+                                                                                          num_boxes, Hout, Wout)
             num_all_boxes = torch.sum(num_boxes)
             YOLO_cls_loss = F.mse_loss(prob_pred * _class_mask, _classes * _class_mask,
                                        size_average=False) / num_all_boxes

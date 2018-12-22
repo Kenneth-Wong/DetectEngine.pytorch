@@ -14,6 +14,7 @@ if __name__ == '__main__':
     processors = dict()
     processors['det_frcnn'] = import_class('processor.detection.frcnn.frcnn_Processor')
     processors['det_yolov2'] = import_class('processor.detection.yolov2.yolov2_Processor')
+    processors['det_yolov2_v2'] = import_class('processor.detection.yolov2_v2.yolov2_Processor_v2')
     # processors['sg_imp'] = import_class('processor.sg.imp.imp_Porcessor')
     # processors['demo'] = import_class('processor.demo.Demo')
     # endregion yapf: enable

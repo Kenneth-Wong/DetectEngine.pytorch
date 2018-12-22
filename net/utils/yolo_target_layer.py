@@ -21,7 +21,7 @@ class _YOLOTargetLayer(nn.Module):
         self._feat_stride = args['mix_args']['feat_stride'][0]
         self._anchors = torch.from_numpy(np.array(args['mix_args']['anchors'], dtype=np.float))
 
-    def forward(self, bbox_pred, iou_pred, gt_boxes, num_boxes, size_index):
+    def forward(self, bbox_pred, iou_pred, gt_boxes, num_boxes, Hout, Wout):
         """
         build targets for bbox, iou, and classes
         :param bbox_pred: b*hw*5*4
@@ -31,8 +31,7 @@ class _YOLOTargetLayer(nn.Module):
         :param size_index: int
         :return:
         """
-        Win, Hin = self._input_size[size_index]
-        Wout, Hout = self._output_size[size_index]
+        Win, Hin = Wout * self._feat_stride, Hout * self._feat_stride
         batch_size, hw, num_anchors = bbox_pred.size(0), bbox_pred.size(1), bbox_pred.size(2)
         max_gt_num = gt_boxes.size(1)
         assert hw == Wout * Hout, 'Size mis match: the output feature map has size {} but it should be {}'.format(

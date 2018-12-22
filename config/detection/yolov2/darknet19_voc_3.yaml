@@ -1,10 +1,10 @@
-work_dir: ./exps/detection/yolov2_darknet19/voc0712trainval
+work_dir: ./exps/detection/yolov2_darknet19/voc07trainval
 data_dir: ./data/VOCdevkit
 session: 1
 use_gpu: True
 device: [0,1,2]
 model: net.detection.yolov2_darknet19.yolov2_darknet19
-train_dataset: voc_2007_trainval+voc_2012_trainval
+train_dataset: voc_2007_trainval
 val_dataset:
 test_dataset: voc_2007_test
 pretrained_weight: ./data/pretrained_model/darknet19.weights.npz # The backbone pretrained model on imagenet.
