@@ -77,7 +77,7 @@ We benchmark our code thoroughly on three datasets: pascal voc, using vgg16 and 
 | ---------------------------------------- | ----- | ---------- | ---- | -------- | --------- | ---------- | ------- | ---------- |
 | [yolov2-dark19](https://pan.baidu.com/s/1cOdp8gQrdJVMPdvI8OIkkg) | 3     | 48         | 1e-3 | 60,90    | 160       | 0.07 hr    | 11000MB | 63.2 (416) |
 
-**!! NOTE: The results of YOLOv2-darknet19 is now far from expectation. If you are interested in it, we are glad that you can join us to debug these codes. **
+**NOTE: The results of YOLOv2-darknet19 is now far from expectation. If you are interested in it, we are glad that you can join us to debug these codes. **
 
 * Click the links in the above tables to download our trained models.
 * If not mentioned, the GPU we used is NVIDIA Titan Xp Pascal (12GB).
@@ -85,7 +85,7 @@ We benchmark our code thoroughly on three datasets: pascal voc, using vgg16 and 
 ## Preparation
 
 
-First of all, clone the code
+First of all, clone the code:
 ```
 git clone https://github.com/Kenneth-Wong/DetectEngine.pytorch.git DetectEngine
 ```
@@ -101,8 +101,6 @@ Then, install torchlight module:
 cd torchlight
 python setup.py install
 ```
-
-**Note: **
 
 ### prerequisites
 
@@ -121,8 +119,8 @@ python setup.py install
 We used two pretrained models in our experiments, VGG and ResNet101. You can download these two models from:
 
 * VGG16: [Dropbox](https://www.dropbox.com/s/s3brpk0bdq60nyb/vgg16_caffe.pth?dl=0), [VT Server](https://filebox.ece.vt.edu/~jw2yang/faster-rcnn/pretrained-base-models/vgg16_caffe.pth)
-
 * ResNet101: [Dropbox](https://www.dropbox.com/s/iev3tkbz5wyyuz9/resnet101_caffe.pth?dl=0), [VT Server](https://filebox.ece.vt.edu/~jw2yang/faster-rcnn/pretrained-base-models/resnet101_caffe.pth)
+* YOLOv2: [darknet19](https://drive.google.com/file/d/0B4pXCfnYmG1WRG52enNpcV80aDg/view)
 
 Download them and put them into the data/pretrained_model/.
 
